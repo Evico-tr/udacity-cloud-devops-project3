@@ -181,7 +181,7 @@ jobs:
             ansible-playbook -i intentory.txt configure-server.yml
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-          
+
 workflows:
   default:
     jobs:
@@ -197,3 +197,5 @@ workflows:
           requires: [build-frontend]
       - deploy-infrastructure:
           requires: [test-frontend, test-backend, scan-backend, scan-frontend]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
