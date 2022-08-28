@@ -184,10 +184,15 @@ jobs:
 
   run-migrations:
     docker:
-      - image: circleci/node:13.8.0
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
-      - run: pip3 install awscli
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update nodejs
+            apk add --update npm
+            pip3 install awscli
       - run:
           name: Run migrations
           command: |
