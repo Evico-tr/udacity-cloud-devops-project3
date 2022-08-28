@@ -184,15 +184,17 @@ jobs:
 
   run-migrations:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update nodejs
-            apk add --update npm
-            pip3 install awscli
+      - run: apt-get install awscli
+      # - run:
+      #     name: Install dependencies
+      #     command: |
+      #       apk add --update nodejs
+      #       apk add --update npm
+      #       apk add --update curl
+      #       pip3 install awscli
       - run:
           name: Run migrations
           command: |
@@ -269,22 +271,22 @@ jobs:
             apk add --update gzip
             pip3 install awscli
             aws --version
-      - run:
-          name: Create env file
-          command: |
-            cd backend
-            touch .env
-            echo "TYPEORM_CONNECTION=postgres" >> .env
-            echo "TYPEORM_MIGRATIONS_DIR=./src/migrations" >> .env
-            echo "TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts" >> .env
-            echo "TYPEORM_MIGRATIONS=./src/migrations/*.ts" >> .env
-            # Use these values for the local PG database from the Docker Compose file
-            echo "TYPEORM_HOST=${TYPEORM_HOST}"  >> .env
-            echo "TYPEORM_PORT=${TYPEORM_PORT}" >> .env
-            echo "TYPEORM_USERNAME=${TYPEORM_USERNAME}" >> .env
-            echo "TYPEORM_PASSWORD=${TYPEORM_PASSWORD}" >> .env
-            echo "TYPEORM_DATABASE=${TYPEORM_DATABASE}" >> .env
-            cat .env
+      # - run:
+      #     name: Create env file
+      #     command: |
+      #       cd backend
+      #       touch .env
+      #       echo "TYPEORM_CONNECTION=postgres" >> .env
+      #       echo "TYPEORM_MIGRATIONS_DIR=./src/migrations" >> .env
+      #       echo "TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts" >> .env
+      #       echo "TYPEORM_MIGRATIONS=./src/migrations/*.ts" >> .env
+      #       # Use these values for the local PG database from the Docker Compose file
+      #       echo "TYPEORM_HOST=${TYPEORM_HOST}"  >> .env
+      #       echo "TYPEORM_PORT=${TYPEORM_PORT}" >> .env
+      #       echo "TYPEORM_USERNAME=${TYPEORM_USERNAME}" >> .env
+      #       echo "TYPEORM_PASSWORD=${TYPEORM_PASSWORD}" >> .env
+      #       echo "TYPEORM_DATABASE=${TYPEORM_DATABASE}" >> .env
+      #       cat .env
       - run:
           name: Deploy backend
           command: |
