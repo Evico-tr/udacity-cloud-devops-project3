@@ -318,18 +318,14 @@ jobs:
             apk add --update gzip
             pip3 install awscli
       - run:
-          name: Get backend url
-          command: |
-            echo 'export BACKEND_IP=$(aws ec2 describe-instances \
-            --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-            --query "Reservations[*].Instances[*].[PublicIpAddress]" \
-            --output text)' >> $BASH_ENV
-            echo 'export API_URL="http://${BACKEND_IP}:3030"' >> $BASH_ENV
-            echo "${API_URL}"
-      - run:
           name: Backend smoke test.
           command: |
-            echo "${API_URL}/api/status"
+            export BACKEND_IP=$(aws ec2 describe-instances \
+            --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+            --query "Reservations[*].Instances[*].[PublicIpAddress]" \
+            --output text)
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}"
             if curl "${API_URL}/api/status" | grep "ok"
             then
                 return 0
