@@ -248,7 +248,7 @@ jobs:
           name: Get backend url
           command: |
             export BACKEND_IP=$(aws ec2 describe-instances \
-            --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}"
+            --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --output text)
             export API_URL="http://${BACKEND_IP}:3030"
@@ -310,10 +310,8 @@ jobs:
           name: Deploy backend
           command: |
             cd backend
-            cat .env
             npm install
             npm run build
-            ls -a
             cd ..
             # Zip the directory
             tar -C backend -czvf artifact.tar.gz .

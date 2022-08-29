@@ -15,12 +15,12 @@
 #   apt:
 #     autoremove: true
 
-- name: "install dependencies."
-  become: true
-  apt:
-    name: ["nodejs", "npm"]
-    state: latest
-    update_cache: true
+# - name: "install dependencies."
+#   become: true
+#   apt:
+#     name: ["nodejs", "npm"]
+#     state: latest
+#     update_cache: true
 
 - name: "install pm2"
   become: true
